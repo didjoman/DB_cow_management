@@ -26,9 +26,9 @@
 \usepackage{sectsty}
 \usepackage{url, lipsum}
 \usepackage{amsmath}
-%\usepackage[pdftex]{graphicx} % to include pictures
-%\usepackage{wrapfig} % to be able to wrap picture / figures
+\usepackage{lscape}
 
+% [begin] Numérotation des sections /subsec / subsubsec 
 \usepackage{titlesec}
 \titleformat{\chapter}
   {\Large\bfseries} % format
@@ -39,7 +39,14 @@
 \renewcommand \thesection{\Roman{section}}
 \renewcommand \thesubsection{\Roman{section}.\arabic{subsection}}
 \renewcommand \thesubsubsection{\Roman{section}.\arabic{subsection}.\arabic{subsubsection}}
+% [/end] Numérotation des sections /subsec / subsubsec 
 
+% [begin] arrows with 2 heads
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand\twoheaduparrow{\mathrel{\rotatebox[origin=c]{90}{$\twoheadrightarrow$}}}
+% [/end]arrows with 2 heads
 
 \newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
 \onehalfspacing
@@ -52,8 +59,8 @@
 \pagestyle{fancy}
 \fancyhf{}
 \setlength\headheight{15pt}
-\fancyhead[L]{Student ID: 1034511}
-\fancyhead[R]{Anglia Ruskin University}
+\fancyhead[L]{A.Rupp, R.Laguerre, F.Perroud, A.Bel Alonso}
+\fancyhead[R]{2A, Projet Bases de Données}
 \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
 %-------------------------------------------------------------------------------
 % TITLE PAGE
@@ -89,25 +96,53 @@
 \section*{Introduction}
 %\lipsum
 
-\section{Dépendances fonctionnelles}
-
-$~$\\
+\section{Analyse des dépendances et contraintes}
+\subsection{Dépendances fonctionnelles}
+\noindent
 NumSiren $\rightarrow$ NomExploitation, typeExploitation, nomCommune \\
 NumSecuSociale $\rightarrow$ nomEleveur, prenomEleveur, adresseEleveur \\
 NumVache $\rightarrow$ NomVache, race, rangLactation \\
 NumVache, Date $\rightarrow$ NumEvenement \\
-NumEvenement $\rightarrow$ NumVache, Date (ou on met une contrainte) \\
+NumEvenement $\rightarrow$ NumVache, Date \textit{(ou on met une contrainte)} \\
 NumEvenementProd $\rightarrow$ qteLait \\
 NumEvenementMaladie $\rightarrow$ nomMaladie \\
+NumEvenementVente $\rightarrow$ NumEleveur, NumVache, prixVache, vente
 
+\subsection{Contraintes de valeur}
+\noindent
+typeExploitation $\in \lbrace$ GAEC, EARL $\rbrace$ \\
+race $\in \lbrace$ Montbeliarde, Prim'Holstein $\rbrace$ \\
+rangLactation $\in \llbracket$0, 5$\rrbracket$ \\
+Ext(NumEvenementProd) $\subseteq$ Ext(NumEvenement) \\
+Ext(NumEvenementMaladie)$\subseteq$ Ext(NumEvenement) \\
+Ext(NumEvenementVente) $\subseteq$ Ext(NumEvenement) \\
+Ext(NumEvenementVelage) $\subseteq$ Ext(NumEvenement) \\
+Ext(NumEvenementDeces) $\subseteq$ Ext(NumEvenement) 
 
-\section{Contraintes de valeur}
+\subsection{Contraintes de multiplicité}
+\noindent
+NumSiren {\Large$\twoheadrightarrow$} NumEleveur (1 ou +) \\
+NumSiren {\Large$\twoheadrightarrow$} NumVache \\
+NumVelage {\Large$\twoheadrightarrow$} NumVache (1 ou +) \\
+NumEvenementVente {\Large$\twoheadrightarrow$} NumEleveur (0 ou 1) \\
 
-\section{Contraintes de multiplicité}
+\subsection{Autres contraintes}
+Une vache malade ne peut pas produire de lait. \\
 
-\section{Autres contraintes}
+\begin{landscape}
 
+\section{Modèle Entité/Association}
 
+\begin{figure}[!h]
+\centering
+\includegraphics[height=.75\textwidth]{./uml/schema.png}
+\caption{Schéma Entité/Association UML.}
+\end{figure}
+
+\end{landscape}
+
+\section{Modèle relationnel}
+// TODO
 
 \end{document}
 
